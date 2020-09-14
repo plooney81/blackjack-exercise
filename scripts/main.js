@@ -1,4 +1,4 @@
-function addCard(cardVal, suit, whichHand){
+function addCard(cardVal, suit, whichHand, hand){
  
   let container = document.querySelector(`#${whichHand}-hand`);
 
@@ -7,6 +7,8 @@ function addCard(cardVal, suit, whichHand){
     style="height: 50px; width: auto;" class="m-1">
   `
   container.innerHTML += newCard;
+
+  printPoints(returnHandPoints(hand), whichHand);
 }
 
 //create our deck of cards
@@ -40,13 +42,13 @@ function buildDeck(numbOfDecks){
 function dealCards(deck, player, dealer){
   arrayToReturn = [];
   player.push(deck.pop());
-  addCard(player[player.length - 1].type, player[player.length - 1].suit, 'player');
+  addCard(player[player.length - 1].type, player[player.length - 1].suit, 'player', player);
   dealer.push(deck.pop());
-  addCard(dealer[dealer.length - 1].type, dealer[dealer.length - 1].suit, 'dealer');
+  addCard(dealer[dealer.length - 1].type, dealer[dealer.length - 1].suit, 'dealer', dealer);
   player.push(deck.pop());
-  addCard(player[player.length - 1].type, player[player.length - 1].suit, 'player');
+  addCard(player[player.length - 1].type, player[player.length - 1].suit, 'player', player);
   dealer.push(deck.pop());
-  addCard(dealer[dealer.length - 1].type, dealer[dealer.length - 1].suit, 'dealer');
+  addCard(dealer[dealer.length - 1].type, dealer[dealer.length - 1].suit, 'dealer', dealer);
 
   console.log(player);
   console.log(dealer);
@@ -70,13 +72,54 @@ function shuffle(deck){
   return newArray;
 }
 
+function hit(deck, player){
+  let arrayToReturn = [];
+  player.push(deck.pop());
+  addCard(player[player.length - 1].type, player[player.length - 1].suit, 'player', player);
+  arrayToReturn.push(deck);
+  arrayToReturn.push(player);
+  return arrayToReturn;
+}
+
+function returnHandPoints(hand){
+  let points = [0, 0];
+  for (let index = 0; index < hand.length; index++){
+    if (hand[index].rank > 10){
+      points[0] += 10;
+      points[1] += 10;
+    }else if(hand[index].rank === 1){
+      points[0] += 1;
+      points[1] += 11;
+    }else{
+      points[0] += hand[index].rank;
+      points[1] += hand[index].rank;
+    }
+  }
+  return points
+}
+
+function printPoints(points, whoseHand){
+  let container = document.querySelector(`#${whoseHand}-points`);
+  
+  if (points[0] === points[1] || points[1] > 21){
+    container.innerHTML = points[0];
+  }else if (points[1] === 21){
+    container.innerHTML = points[1];
+  }else{
+    container.innerHTML = `${points[0]} or ${points[1]}`;
+  }
+
+}
+
 //Because our javascript link is that the top, we will only run stuff once the window
 // is loaded.
 
 let playerHand = [],
   dealerHand = [],
   playingDecks,
-  shuffledDeck;
+  shuffledDeck,
+  playerPoints,
+  dealerPoints;
 
 window.addEventListener('DOMContentLoaded', function() {
   // Execute after page load
@@ -98,7 +141,9 @@ window.addEventListener('DOMContentLoaded', function() {
 
 
     }else if(e.target.id == "hit-button"){
-      // hit function call
+      let hitReturnArray = hit(shuffledDeck, playerHand);
+      shuffledDeck = hitReturnArray[0];
+      playerHand = hitReturnArray[1];
     }else if(e.target.id == "stand-button"){
 
     }
