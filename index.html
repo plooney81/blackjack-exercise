@@ -12,12 +12,14 @@
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 
-
   <script src="scripts/main.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital@1&display=swap" rel="stylesheet">
 </head>
+
 <body>
-  <div class="message-box" id="messages"></div>
-  <div class="table">
+  <div class="message-box d-flex justify-content-center mt-5" id="messages"></div>
+  <div class="table container mt-5 rounded">
     <div class="player">
       <label class="player-name">Dealer: 
         <span id="dealer-points" class="points"></span>
@@ -34,10 +36,10 @@
         <!-- Player Hand -->
       </div>
     </div>
-    <div class="buttons">
-      <button id="deal-button" type="button">Deal</button>
-      <button id="hit-button" type="button">Hit</button>
-      <button id="stand-button" type="button">Stand</button>
+    <div class="buttons d-flex justify-content-center ">
+      <button id="deal-button" class="rounded p-1" type="button">Deal</button>
+      <button id="hit-button"  class="rounded p-1" type="button">Hit</button>
+      <button id="stand-button"  class="rounded p-1" type="button">Stand</button>
     </div>
   </div>
 </body>
