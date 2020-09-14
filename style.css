@@ -8,12 +8,13 @@
 
 .table{
     background-color: rgb(93, 191, 63);
+    border: 1px solid brown;
 }
 
 #dealer-hand, #player-hand{
     background-color: rgb(65, 251, 8);
     width: 100%;
-    height: 75px;
+    height: 60px;
 }
 
 /* #player-hand{
@@ -30,4 +31,10 @@ button{
 
 #messages{
     font-size: 20px;
+}
+
+.hand{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
 }
