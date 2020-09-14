@@ -144,6 +144,12 @@ function updateScoreBoard(scoreBoard){
 
 function whoWon(playHandPoints, delHandPoints, scoreBoard){
   let mess = document.querySelector('#messages');
+
+  document.querySelector('#deal-button').setAttribute('style', 'display: none;');
+  document.querySelector('#hit-button').setAttribute('style', 'display: none;');
+  document.querySelector('#stand-button').setAttribute('style', 'display: none;');
+  document.querySelector('#reset-button').setAttribute('style', 'display: inline;');
+
   let highestPlayScore = 0;
   let highestDealerScore = 0;
   for(let playerScoreIndex = 0; playerScoreIndex < playHandPoints.length; playerScoreIndex++){
@@ -240,8 +246,26 @@ window.addEventListener('DOMContentLoaded', function() {
       }else{
         alert('Can\'t do that!')
       }
-    }else if(e.target.id == "reset"){
-
+    }else if(e.target.id == "reset-button"){
+      document.querySelector('#deal-button').setAttribute('style', 'display: inline;');
+      document.querySelector('#hit-button').setAttribute('style', 'display: inline;');
+      document.querySelector('#stand-button').setAttribute('style', 'display: inline;');
+      document.querySelector('#reset-button').setAttribute('style', 'display: none;');
+      document.querySelector('#dealer-hand').innerHTML = '';
+      document.querySelector('#player-hand').innerHTML = '';
+      document.querySelector('#messages').innerHTML = '';
+      document.querySelector('#dealer-points').innerHTML = 0;
+      document.querySelector('#player-points').innerHTML = 0;
+      playerHand = [];
+      dealerHand = [];
+      keepDealing = true;
+      playingDecks = [];
+      shuffledDeck = [];
+      playerPoints = [];
+      dealerPoints = [];
+      playingDecks = buildDeck(1);
+      // console.log(playingDecks)
+      shuffledDeck = shuffle(playingDecks);
     }
   })
 })

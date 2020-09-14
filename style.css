@@ -43,6 +43,6 @@ button{
     height: 25px;
 }
 
-#reset-button{
+.hide{
     display: none;
 }
