@@ -125,12 +125,13 @@ function stand(delHand, delPoints, deck){
 
 function bust(hand, whoseHand){
   let mess = document.querySelector('#messages');
-  if (hand[0] >= 22){
-    // console.log(`${whoseHand} busted!`)
-    mess.innerHTML = `${whoseHand} busted!`
-    return false;
-  }else{
-    return true;
+  for(let index = 0; index < hand.length; index++){
+    if (hand[index] <= 21){
+      return true;
+    }else{
+      mess.innerHTML = ` ${whoseHand} busted`;
+      return false;
+    }
   }
 }
 
@@ -163,13 +164,13 @@ function whoWon(playHandPoints, delHandPoints, scoreBoard){
     }
   }
   
-  if(highestPlayScore === highestDealerScore){
+  if(highestPlayScore == highestDealerScore){
     mess.innerHTML += 'Push';
   }else if(highestPlayScore > highestDealerScore){
-    mess.innerHTML += 'Congratulations, you won!';
+    mess.innerHTML += ' Congratulations, you won!';
     scoreBoard.player += 1;
   }else{
-    mess.innerHTML += 'You lost!';
+    mess.innerHTML += ' You lost!';
     scoreBoard.dealer += 1;
   }
 
