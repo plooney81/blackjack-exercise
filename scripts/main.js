@@ -8,15 +8,40 @@ function addCard(cardVal, suit, whichHand){
   container.innerHTML += newCard;
 }
 
+//create our deck of cards
+function buildDeck(numbOfDecks){
+  let deck = [];
+  let suits = ['diamonds', 'hearts', 'spades', 'clubs'];
+
+  
+  for (let numDeckIndex = 0; numDeckIndex < numbOfDecks; numDeckIndex++){
+    for (let suitsIndex = 0; suitsIndex < suits.length; suitsIndex++){
+      for (let rankIndex = 1; rankIndex <= 13; rankIndex++){
+        deck.push({rank: rankIndex, suit: suits[suitsIndex]});
+      }
+    }
+  }
+
+  return deck;
+}
 
 //Because our javascript link is that the top, we will only run stuff once the window
 // is loaded.
 
+let playerHand = [],
+  dealerHand = [],
+  playingDecks;
+
 window.addEventListener('DOMContentLoaded', function() {
   // Execute after page load
+    playingDecks = buildDeck(1);
   document.addEventListener('click', function(e){
     if(e.target.id == "deal-button"){
-      addCard('2', "clubs", "player");
+      
+    }else if(e.target.id == "hit-button"){
+      // hit function call
+    }else if(e.target.id == "stand-button"){
+
     }
   })
 })
