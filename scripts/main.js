@@ -50,8 +50,8 @@ function dealCards(deck, player, dealer){
   dealer.push(deck.pop());
   addCard(dealer[dealer.length - 1].type, dealer[dealer.length - 1].suit, 'dealer', dealer);
 
-  console.log(player);
-  console.log(dealer);
+  // console.log(player);
+  // console.log(dealer);
   
 
   arrayToReturn.push(deck);
@@ -111,6 +111,69 @@ function printPoints(points, whoseHand){
 
 }
 
+function stand(delHand, delPoints, deck){
+  let arrayToReturn = [];
+  while (delPoints[1] < 17){
+    delHand.push(deck.pop());
+    addCard(delHand[delHand.length - 1].type, delHand[delHand.length - 1].suit, 'dealer', delHand);
+    delPoints = returnHandPoints(delHand);
+  }
+  arrayToReturn.push(deck);
+  arrayToReturn.push(delHand);
+  return arrayToReturn;
+}
+
+function bust(hand, whoseHand){
+  let mess = document.querySelector('#messages');
+  if (hand[0] >= 22){
+    // console.log(`${whoseHand} busted!`)
+    mess.innerHTML = `${whoseHand} busted!`
+    return false;
+  }else{
+    return true;
+  }
+}
+
+function updateScoreBoard(scoreBoard){
+  let playerSB = document.querySelector('#player-sb');
+  let dealerSB = document.querySelector('#dealer-sb');
+
+  playerSB.innerHTML = scoreBoard.player;
+  dealerSB.innerHTML = scoreBoard.dealer;
+}
+
+function whoWon(playHandPoints, delHandPoints, scoreBoard){
+  let mess = document.querySelector('#messages');
+  let highestPlayScore = 0;
+  let highestDealerScore = 0;
+  for(let playerScoreIndex = 0; playerScoreIndex < playHandPoints.length; playerScoreIndex++){
+    if(playHandPoints[playerScoreIndex] > highestPlayScore && playHandPoints[playerScoreIndex] <= 21){
+      highestPlayScore = playHandPoints[playerScoreIndex];
+    }
+  }  
+  for(let dealerScoreIndex = 0; dealerScoreIndex < delHandPoints.length; dealerScoreIndex++){
+    if(delHandPoints[dealerScoreIndex] > highestPlayScore && delHandPoints[dealerScoreIndex] <= 21){
+      highestDealerScore = delHandPoints[dealerScoreIndex];
+    }
+  }
+  
+  if(highestPlayScore === highestDealerScore){
+    mess.innerHTML += 'Push';
+  }else if(highestPlayScore > highestDealerScore){
+    mess.innerHTML += 'Congratulations, you won!';
+    scoreBoard.player += 1;
+  }else{
+    mess.innerHTML += 'You lost!';
+    scoreBoard.dealer += 1;
+  }
+
+  updateScoreBoard(scoreBoard);
+  return scoreBoard;
+
+}
+
+
+
 //Because our javascript link is that the top, we will only run stuff once the window
 // is loaded.
 
@@ -119,14 +182,16 @@ let playerHand = [],
   playingDecks,
   shuffledDeck,
   playerPoints,
-  dealerPoints;
+  dealerPoints,
+  keepDealing = true,
+  scoreBoard = {player: 0, dealer: 0};
 
 window.addEventListener('DOMContentLoaded', function() {
   // Execute after page load
     playingDecks = buildDeck(1);
-    console.log(playingDecks)
+    // console.log(playingDecks)
     shuffledDeck = shuffle(playingDecks);
-    console.log(shuffledDeck);
+    // console.log(shuffledDeck);
   document.addEventListener('click', function(e){
     if(e.target.id == "deal-button"){
       if(playerHand.length > 0){
@@ -143,16 +208,39 @@ window.addEventListener('DOMContentLoaded', function() {
 
 
     }else if(e.target.id == "hit-button"){
-      if (playerPoints < 21){
-        let hitReturnArray = hit(shuffledDeck, playerHand);
-        shuffledDeck = hitReturnArray[0];
-        playerHand = hitReturnArray[1];
-        playerPoints = returnHandPoints(playerHand);
+      if (playerHand.length > 0){
+        if (keepDealing){
+          let hitReturnArray = hit(shuffledDeck, playerHand);
+          shuffledDeck = hitReturnArray[0];
+          playerHand = hitReturnArray[1];
+          playerPoints = returnHandPoints(playerHand);
+          keepDealing = bust(playerPoints, "Player");
+          if (keepDealing === false){
+            scoreBoard = whoWon(playerPoints, dealerPoints, scoreBoard);
+          }
+        }
       }else{
-        
+        alert('Can\'t do that!')
       }
+ 
 
     }else if(e.target.id == "stand-button"){
+      if (playerHand.length > 0){
+        // stand function
+        if(keepDealing){
+          let standReturnArray = stand(dealerHand, dealerPoints, shuffledDeck);
+          shuffledDeck = standReturnArray[0];
+          dealerHand = standReturnArray[1];
+          dealerPoints = returnHandPoints(dealerHand);
+          keepDealing = bust(dealerPoints, "Dealer");
+          scoreboard = whoWon(playerPoints, dealerPoints, scoreBoard);
+        }else{
+          scoreboard = whoWon(playerPoints, dealerPoints, scoreBoard);
+        }
+      }else{
+        alert('Can\'t do that!')
+      }
+    }else if(e.target.id == "reset"){
 
     }
   })
