@@ -137,13 +137,21 @@ window.addEventListener('DOMContentLoaded', function() {
         shuffledDeck = returnArray[0];
         playerHand = returnArray[1];
         dealerHand = returnArray[2];  
+        playerPoints = returnHandPoints(playerHand);
+        dealerPoints = returnHandPoints(dealerHand);
       }
 
 
     }else if(e.target.id == "hit-button"){
-      let hitReturnArray = hit(shuffledDeck, playerHand);
-      shuffledDeck = hitReturnArray[0];
-      playerHand = hitReturnArray[1];
+      if (playerPoints < 21){
+        let hitReturnArray = hit(shuffledDeck, playerHand);
+        shuffledDeck = hitReturnArray[0];
+        playerHand = hitReturnArray[1];
+        playerPoints = returnHandPoints(playerHand);
+      }else{
+        
+      }
+
     }else if(e.target.id == "stand-button"){
 
     }
