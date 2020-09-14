@@ -40,23 +40,17 @@ function buildDeck(numbOfDecks){
 function dealCards(deck, player, dealer){
   arrayToReturn = [];
   player.push(deck.pop());
+  addCard(player[player.length - 1].type, player[player.length - 1].suit, 'player');
   dealer.push(deck.pop());
+  addCard(dealer[dealer.length - 1].type, dealer[dealer.length - 1].suit, 'dealer');
   player.push(deck.pop());
+  addCard(player[player.length - 1].type, player[player.length - 1].suit, 'player');
   dealer.push(deck.pop());
+  addCard(dealer[dealer.length - 1].type, dealer[dealer.length - 1].suit, 'dealer');
 
   console.log(player);
   console.log(dealer);
   
-  window.setTimeout(addCard(player[0].type, player[0].suit, 'player'), 3000);
-  window.setTimeout(addCard(dealer[0].type, dealer[0].suit, 'dealer'), 3000);
-  window.setTimeout(addCard(player[1].type, player[1].suit, 'player'), 3000);
-  window.setTimeout(addCard(dealer[1].type, dealer[1].suit, 'dealer'), 3000);
-
-  // ;
-  // addCard(dealer[0].type, dealer[0].suit, 'dealer');
-  // addCard(player[1].type, player[1].suit, 'player');
-  // addCard(dealer[1].type, dealer[1].suit, 'dealer');
-
 
   arrayToReturn.push(deck);
   arrayToReturn.push(player);
@@ -66,23 +60,42 @@ function dealCards(deck, player, dealer){
 
 }
 
+function shuffle(deck){
+  newArray = deck;
+  for (let index = deck.length - 1; index >= 0; index--){
+    let randomIndex = Math.floor(Math.random() * index);      // returns a random integer from 0 to index
+    // console.log(`Card at ${index} - ${newArray[index]} will be swapped with card at ${randomIndex} - ${newArray[randomIndex]}`);
+    [newArray[index], newArray[randomIndex]] = [newArray[randomIndex], newArray[index]]; 
+  }
+  return newArray;
+}
+
 //Because our javascript link is that the top, we will only run stuff once the window
 // is loaded.
 
 let playerHand = [],
   dealerHand = [],
-  playingDecks;
+  playingDecks,
+  shuffledDeck;
 
 window.addEventListener('DOMContentLoaded', function() {
   // Execute after page load
     playingDecks = buildDeck(1);
     console.log(playingDecks)
+    shuffledDeck = shuffle(playingDecks);
+    console.log(shuffledDeck);
   document.addEventListener('click', function(e){
     if(e.target.id == "deal-button"){
-      let returnArray = dealCards(playingDecks, playerHand, dealerHand);
-      playingDecks = returnArray[0];
-      playerHand = returnArray[1];
-      dealerHand = returnArray[2];
+      if(playerHand.length > 0){
+        alert('You cant do that!')
+      }else{
+
+        let returnArray = dealCards(shuffledDeck, playerHand, dealerHand);
+        shuffledDeck = returnArray[0];
+        playerHand = returnArray[1];
+        dealerHand = returnArray[2];  
+      }
+
 
     }else if(e.target.id == "hit-button"){
       // hit function call
