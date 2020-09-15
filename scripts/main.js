@@ -1,3 +1,8 @@
+// ------------------------------------------------
+// Function that adds a new card picture to the specified hand in our html document...
+//  it also calls our printPoints function that will update the html for the hands points...
+//  unless of course it is the second card of the dealers off the deal, which will be a picture of the back of a deck, 
+//  and the points will not be updated
 function addCard(cardVal, suit, whichHand, hand, special){
  
   let container = document.querySelector(`#${whichHand}-hand`);
@@ -19,7 +24,9 @@ function addCard(cardVal, suit, whichHand, hand, special){
   printPoints(returnHandPoints(hand, special), whichHand);
 }
 
-//create our deck of cards
+// ------------------------------------------------
+// Function that creates our deck or numbOfDecks of cards
+// traditional blackjack is used with 6 different decks!
 function buildDeck(numbOfDecks){
   let deck = [];
   let suits = ['diamonds', 'hearts', 'spades', 'clubs'];
@@ -47,6 +54,11 @@ function buildDeck(numbOfDecks){
   return deck;
 }
 
+// ------------------------------------------------
+// Function that deals the original hand
+// notice the true argument on the second dealer addCard call, this will fire two things:
+//  1. It will display the back of the card, not allowing the player to see the dealer's second card in his hand.
+//  2. It will only calculate and display the points for the dealers first card, not his second.
 function dealCards(deck, player, dealer){
   arrayToReturn = [];
   player.push(deck.pop());
@@ -70,6 +82,8 @@ function dealCards(deck, player, dealer){
 
 }
 
+// ------------------------------------------------
+// Function that shuffles our deck (or decks) of cards
 function shuffle(deck){
   newArray = deck;
   for (let index = deck.length - 1; index >= 0; index--){
@@ -80,6 +94,8 @@ function shuffle(deck){
   return newArray;
 }
 
+// ------------------------------------------------
+// Function that adds a card from teh top of the deck to the players hand and then calls the function to display that new card
 function hit(deck, player){
   let arrayToReturn = [];
   player.push(deck.pop());
@@ -89,6 +105,10 @@ function hit(deck, player){
   return arrayToReturn;
 }
 
+// ------------------------------------------------
+// Function that calculates the given hands point value ...
+// unless it is a special hand, in which it only calculates the first value 
+// (i.e. the dealers hand off the original deal, before) the player is done hitting
 function returnHandPoints(hand, special){
   let aces = 0;
   let points = [0, 0];
@@ -114,6 +134,8 @@ function returnHandPoints(hand, special){
   return points
 }
 
+// ------------------------------------------------
+// Function that prints the hand points for the given players hand
 function printPoints(points, whoseHand){
   let container = document.querySelector(`#${whoseHand}-points`);
   
@@ -127,6 +149,9 @@ function printPoints(points, whoseHand){
 
 }
 
+// ------------------------------------------------
+// Function that shows both of the dealers initial cards after the main deal and:
+// will add cards the dealers hand if their total is not greater than or equal to 17
 function stand(delHand, delPoints, deck){
   let arrayToReturn = [];
   document.querySelector(`#dealer-hand`).innerHTML = '';
@@ -150,6 +175,8 @@ function stand(delHand, delPoints, deck){
   return arrayToReturn;
 }
 
+// ------------------------------------------------
+// Function that calculates if the given hand is a bust
 function bust(hand, whoseHand){
   let mess = document.querySelector('#messages');
   for(let index = 0; index < hand.length; index++){
@@ -162,6 +189,8 @@ function bust(hand, whoseHand){
   }
 }
 
+// ------------------------------------------------
+// Function that updates the scoreboard -----------
 function updateScoreBoard(scoreBoard){
   let playerSB = document.querySelector('#player-sb');
   let dealerSB = document.querySelector('#dealer-sb');
@@ -170,6 +199,9 @@ function updateScoreBoard(scoreBoard){
   dealerSB.innerHTML = scoreBoard.dealer;
 }
 
+
+// ------------------------------------------------
+// Function that figures out who won --------------
 function whoWon(playHandPoints, delHandPoints, scoreBoard, betAmount){
   let mess = document.querySelector('#messages');
 
@@ -219,6 +251,8 @@ function whoWon(playHandPoints, delHandPoints, scoreBoard, betAmount){
   return scoreBoard;
 
 }
+// End Function Section ---------------------------
+// ------------------------------------------------
 
 let playerHand = [],
   dealerHand = [],
