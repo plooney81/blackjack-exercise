@@ -1,11 +1,19 @@
-function addCard(cardVal, suit, whichHand, hand){
+function addCard(cardVal, suit, whichHand, hand, special){
  
   let container = document.querySelector(`#${whichHand}-hand`);
-
-  let newCard = `
+  let newCard = '';
+  if (!special){
+    newCard = `
     <img src="images/${cardVal}_of_${suit}.png" alt="Picture of the ${cardVal} of ${suit}"
     style="height: 50px; width: auto;" class="m-1">
-  `
+    `
+  }else{
+    newCard = `
+    <img src="images/back.svg" alt="Picture of the back of a deck of cards"
+    style="height: 50px; width: auto;" class="m-1">
+    `
+  }
+
   container.innerHTML += newCard;
 
   printPoints(returnHandPoints(hand), whichHand);
@@ -42,13 +50,13 @@ function buildDeck(numbOfDecks){
 function dealCards(deck, player, dealer){
   arrayToReturn = [];
   player.push(deck.pop());
-  addCard(player[player.length - 1].type, player[player.length - 1].suit, 'player', player);
+  addCard(player[player.length - 1].type, player[player.length - 1].suit, 'player', player, false);
   dealer.push(deck.pop());
-  addCard(dealer[dealer.length - 1].type, dealer[dealer.length - 1].suit, 'dealer', dealer);
+  addCard(dealer[dealer.length - 1].type, dealer[dealer.length - 1].suit, 'dealer', dealer, false);
   player.push(deck.pop());
-  addCard(player[player.length - 1].type, player[player.length - 1].suit, 'player', player);
+  addCard(player[player.length - 1].type, player[player.length - 1].suit, 'player', player, false);
   dealer.push(deck.pop());
-  addCard(dealer[dealer.length - 1].type, dealer[dealer.length - 1].suit, 'dealer', dealer);
+  addCard(dealer[dealer.length - 1].type, dealer[dealer.length - 1].suit, 'dealer', dealer, true);
 
   // console.log(player);
   // console.log(dealer);
@@ -75,7 +83,7 @@ function shuffle(deck){
 function hit(deck, player){
   let arrayToReturn = [];
   player.push(deck.pop());
-  addCard(player[player.length - 1].type, player[player.length - 1].suit, 'player', player);
+  addCard(player[player.length - 1].type, player[player.length - 1].suit, 'player', player, false);
   arrayToReturn.push(deck);
   arrayToReturn.push(player);
   return arrayToReturn;
@@ -118,11 +126,22 @@ function printPoints(points, whoseHand){
 
 function stand(delHand, delPoints, deck){
   let arrayToReturn = [];
+  document.querySelector(`#dealer-hand`).innerHTML = '';
+  addCard(delHand[delHand.length - 2].type, delHand[delHand.length - 2].suit, 'dealer', delHand, false);
+  addCard(delHand[delHand.length - 1].type, delHand[delHand.length - 1].suit, 'dealer', delHand, false);
   while (delPoints[1] < 17){
     delHand.push(deck.pop());
-    addCard(delHand[delHand.length - 1].type, delHand[delHand.length - 1].suit, 'dealer', delHand);
+    addCard(delHand[delHand.length - 1].type, delHand[delHand.length - 1].suit, 'dealer', delHand, false);
     delPoints = returnHandPoints(delHand);
   }
+  if (delPoints[1] > 21 && delPoints[0] < 17){
+    while (delPoints[0] < 17){
+      delHand.push(deck.pop());
+      addCard(delHand[delHand.length - 1].type, delHand[delHand.length - 1].suit, 'dealer', delHand, false);
+      delPoints = returnHandPoints(delHand);
+    }
+  }
+
   arrayToReturn.push(deck);
   arrayToReturn.push(delHand);
   return arrayToReturn;
