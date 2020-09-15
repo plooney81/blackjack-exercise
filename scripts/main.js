@@ -220,11 +220,6 @@ function whoWon(playHandPoints, delHandPoints, scoreBoard, betAmount){
 
 }
 
-
-
-//Because our javascript link is that the top, we will only run stuff once the window
-// is loaded.
-
 let playerHand = [],
   dealerHand = [],
   playingDecks,
@@ -235,6 +230,9 @@ let playerHand = [],
   betAmount = 0,
   scoreBoard = {player: 0, dealer: 0, money: 500};
 
+
+  //Because our javascript link is that the top, we will only run stuff once the window
+// is loaded.
 window.addEventListener('DOMContentLoaded', function() {
   // Execute after page load
     playingDecks = buildDeck(1);
