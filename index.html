@@ -20,8 +20,13 @@
 <body>
   <div class="message-box d-flex justify-content-center mt-5" id="messages"></div>
   <div class="table container mt-5 rounded">
-	<div class="d-flex justify-content-end">
-		<div class='d-flex justify-content-between'>
+	<div class='d-flex justify-content-between mt-1'>
+		<div class='d-flex justify-content-start'>
+			<label >Bank: 
+				<span id="player-bank">$500</span>
+			  </label>
+		</div>
+		<div class="d-flex justify-content-end">
 			<label class="player-name">Dealer: 
 				<span id="dealer-sb" class="points">0</span>
 			  </label>
@@ -47,6 +52,11 @@
       </div>
     </div>
     <div class="buttons d-flex justify-content-center ">
+		<label class="d-flex align-items-center mt-3">Bet: 
+			<span id="bet-amount">$0</span>
+		</label>
+		<button id="increase-bet" class="rounded p-1" type="button">Bet More</button>
+		<button id="decrease-bet" class="rounded p-1" type="button">Bet Less</button>
       <button id="deal-button" class="rounded p-1" type="button">Deal</button>
       <button id="hit-button"  class="rounded p-1" type="button">Hit</button>
 	  <button id="stand-button"  class="rounded p-1" type="button">Stand</button>

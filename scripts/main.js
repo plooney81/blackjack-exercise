@@ -196,6 +196,8 @@ let playerHand = [],
   playerPoints,
   dealerPoints,
   keepDealing = true,
+  money = 500,
+  betAmount = 0,
   scoreBoard = {player: 0, dealer: 0};
 
 window.addEventListener('DOMContentLoaded', function() {
@@ -206,6 +208,8 @@ window.addEventListener('DOMContentLoaded', function() {
     // console.log(shuffledDeck);
   document.addEventListener('click', function(e){
     if(e.target.id == "deal-button"){
+      document.querySelector('#increase-bet').setAttribute('style', 'display: none;');
+      document.querySelector('#decrease-bet').setAttribute('style', 'display: none;');
       if(playerHand.length > 0){
         alert('You cant do that!')
       }else{
@@ -252,7 +256,27 @@ window.addEventListener('DOMContentLoaded', function() {
       }else{
         alert('Can\'t do that!')
       }
+    }else if(e.target.id == 'increase-bet'){
+      if (playerHand.length <= 0 && money - 50 >= 0){
+        betAmount += 50;
+        money -= 50;
+        document.querySelector('#bet-amount').innerHTML = `$${betAmount}`;
+        document.querySelector('#player-bank').innerHTML = `$${money}`;
+      }else{
+        alert('Can\'t do that!')
+      }
+    }else if(e.target.id == 'decrease-bet'){
+      if (playerHand.length <= 0 && betAmount - 50 >= 0){
+        betAmount -= 50;
+        money += 50;
+        document.querySelector('#bet-amount').innerHTML = `$${betAmount}`;
+        document.querySelector('#player-bank').innerHTML = `$${money}`;
+      }else{
+        alert('Can\'t do that!')
+      }
     }else if(e.target.id == "reset-button"){
+      document.querySelector('#increase-bet').setAttribute('style', 'display: inline;');
+      document.querySelector('#decrease-bet').setAttribute('style', 'display: inline;');
       document.querySelector('#deal-button').setAttribute('style', 'display: inline;');
       document.querySelector('#hit-button').setAttribute('style', 'display: inline;');
       document.querySelector('#stand-button').setAttribute('style', 'display: inline;');
@@ -262,6 +286,7 @@ window.addEventListener('DOMContentLoaded', function() {
       document.querySelector('#messages').innerHTML = '';
       document.querySelector('#dealer-points').innerHTML = 0;
       document.querySelector('#player-points').innerHTML = 0;
+      document.querySelector('#bet-amount').innerHTML = 0;
       playerHand = [];
       dealerHand = [];
       keepDealing = true;
