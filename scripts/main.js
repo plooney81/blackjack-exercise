@@ -82,14 +82,19 @@ function hit(deck, player){
 }
 
 function returnHandPoints(hand){
+  let aces = 0;
   let points = [0, 0];
   for (let index = 0; index < hand.length; index++){
     if (hand[index].rank > 10){
       points[0] += 10;
       points[1] += 10;
-    }else if(hand[index].rank === 1){
+    }else if(hand[index].rank === 1 && aces === 0){
       points[0] += 1;
       points[1] += 11;
+      aces += 1;
+    }else if(hand[index].rank === 1 && aces !== 0){
+      points[0] += 1;
+      points[1] += 1;
     }else{
       points[0] += hand[index].rank;
       points[1] += hand[index].rank;
