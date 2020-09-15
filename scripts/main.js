@@ -274,6 +274,10 @@ window.addEventListener('DOMContentLoaded', function() {
     shuffledDeck = shuffle(playingDecks);
     // console.log(shuffledDeck);
   document.addEventListener('click', function(e){
+    // we are using eventBubbling, so instead of adding a bunch of different event listeners for each button, 
+    // we add one click eventListener to the page and the decide what we want to do based on teh target of that event
+    // its called event bubbling becuase when a child event is fired, it will fire all respective parent and ancestor 
+    // events (i.e. bubbling up to their parents and grandparents)
     if(e.target.id == "deal-button"){
       document.querySelector('#increase-bet').setAttribute('style', 'display: none;');
       document.querySelector('#decrease-bet').setAttribute('style', 'display: none;');
