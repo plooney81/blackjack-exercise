@@ -66,7 +66,7 @@ function shuffle(deck){
   newArray = deck;
   for (let index = deck.length - 1; index >= 0; index--){
     let randomIndex = Math.floor(Math.random() * index);      // returns a random integer from 0 to index
-    // console.log(`Card at ${index} - ${newArray[index]} will be swapped with card at ${randomIndex} - ${newArray[randomIndex]}`);
+    // swaps the cards at the two indeces
     [newArray[index], newArray[randomIndex]] = [newArray[randomIndex], newArray[index]]; 
   }
   return newArray;
@@ -148,7 +148,7 @@ function updateScoreBoard(scoreBoard){
   dealerSB.innerHTML = scoreBoard.dealer;
 }
 
-function whoWon(playHandPoints, delHandPoints, scoreBoard){
+function whoWon(playHandPoints, delHandPoints, scoreBoard, betAmount){
   let mess = document.querySelector('#messages');
 
   document.querySelector('#deal-button').setAttribute('style', 'display: none;');
@@ -169,14 +169,27 @@ function whoWon(playHandPoints, delHandPoints, scoreBoard){
     }
   }
   
-  if(highestPlayScore == highestDealerScore){
-    mess.innerHTML += 'Push';
+  if(highestPlayScore === highestDealerScore){
+    document.querySelector('#messages').innerHTML += 'Push';
+    scoreBoard.money += betAmount;
+    document.querySelector('#player-bank').innerHTML = `$${scoreBoard.money}`;
   }else if(highestPlayScore > highestDealerScore){
-    mess.innerHTML += ' Congratulations, you won!';
     scoreBoard.player += 1;
+    if (betAmount === 0){
+      document.querySelector('#messages').innerHTML += ' Congratulations, you won!';
+    }else{
+      document.querySelector('#messages').innerHTML += ` Congratulations, you won $${betAmount}!`;
+      scoreBoard.money += (betAmount * 2);
+      document.querySelector('#player-bank').innerHTML = `$${scoreBoard.money}`;
+    }
   }else{
-    mess.innerHTML += ' You lost!';
     scoreBoard.dealer += 1;
+    if (betAmount === 0){
+      mess.innerHTML += ' You lost!';
+    }else{
+      mess.innerHTML += ` You lost $${betAmount}!`;
+      
+    }
   }
 
   updateScoreBoard(scoreBoard);
@@ -196,9 +209,8 @@ let playerHand = [],
   playerPoints,
   dealerPoints,
   keepDealing = true,
-  money = 500,
   betAmount = 0,
-  scoreBoard = {player: 0, dealer: 0};
+  scoreBoard = {player: 0, dealer: 0, money: 500};
 
 window.addEventListener('DOMContentLoaded', function() {
   // Execute after page load
@@ -232,7 +244,7 @@ window.addEventListener('DOMContentLoaded', function() {
           playerPoints = returnHandPoints(playerHand);
           keepDealing = bust(playerPoints, "Player");
           if (keepDealing === false){
-            scoreBoard = whoWon(playerPoints, dealerPoints, scoreBoard);
+            scoreBoard = whoWon(playerPoints, dealerPoints, scoreBoard, betAmount);
           }
         }
       }else{
@@ -249,28 +261,28 @@ window.addEventListener('DOMContentLoaded', function() {
           dealerHand = standReturnArray[1];
           dealerPoints = returnHandPoints(dealerHand);
           keepDealing = bust(dealerPoints, "Dealer");
-          scoreboard = whoWon(playerPoints, dealerPoints, scoreBoard);
+          scoreboard = whoWon(playerPoints, dealerPoints, scoreBoard, betAmount);
         }else{
-          scoreboard = whoWon(playerPoints, dealerPoints, scoreBoard);
+          scoreboard = whoWon(playerPoints, dealerPoints, scoreBoard, betAmount);
         }
       }else{
         alert('Can\'t do that!')
       }
     }else if(e.target.id == 'increase-bet'){
-      if (playerHand.length <= 0 && money - 50 >= 0){
+      if (playerHand.length <= 0 && scoreBoard.money - 50 >= 0){
         betAmount += 50;
-        money -= 50;
+        scoreBoard.money -= 50;
         document.querySelector('#bet-amount').innerHTML = `$${betAmount}`;
-        document.querySelector('#player-bank').innerHTML = `$${money}`;
+        document.querySelector('#player-bank').innerHTML = `$${scoreBoard.money}`;
       }else{
         alert('Can\'t do that!')
       }
     }else if(e.target.id == 'decrease-bet'){
       if (playerHand.length <= 0 && betAmount - 50 >= 0){
         betAmount -= 50;
-        money += 50;
+        scoreBoard.money += 50;
         document.querySelector('#bet-amount').innerHTML = `$${betAmount}`;
-        document.querySelector('#player-bank').innerHTML = `$${money}`;
+        document.querySelector('#player-bank').innerHTML = `$${scoreBoard.money}`;
       }else{
         alert('Can\'t do that!')
       }
@@ -295,6 +307,7 @@ window.addEventListener('DOMContentLoaded', function() {
       playerPoints = [];
       dealerPoints = [];
       playingDecks = buildDeck(1);
+      betAmount = 0;
       // console.log(playingDecks)
       shuffledDeck = shuffle(playingDecks);
     }
