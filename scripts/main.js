@@ -186,12 +186,13 @@ function whoWon(playHandPoints, delHandPoints, scoreBoard, betAmount){
     }
   }  
   for(let dealerScoreIndex = 0; dealerScoreIndex < delHandPoints.length; dealerScoreIndex++){
-    if(delHandPoints[dealerScoreIndex] > highestPlayScore && delHandPoints[dealerScoreIndex] <= 21){
+    if(delHandPoints[dealerScoreIndex] > highestDealerScore && delHandPoints[dealerScoreIndex] <= 21){
       highestDealerScore = delHandPoints[dealerScoreIndex];
     }
   }
-  
-  if(highestPlayScore === highestDealerScore){
+  console.log(highestPlayScore);
+  console.log(highestDealerScore);
+  if(highestPlayScore == highestDealerScore){
     document.querySelector('#messages').innerHTML += 'Push';
     scoreBoard.money += betAmount;
     document.querySelector('#player-bank').innerHTML = `$${scoreBoard.money}`;
