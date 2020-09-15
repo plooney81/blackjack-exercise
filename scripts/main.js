@@ -251,6 +251,22 @@ function whoWon(playHandPoints, delHandPoints, scoreBoard, betAmount){
   return scoreBoard;
 
 }
+
+// function that resets the correct buttons, and empties the specified innerHTML nodes
+function reset(){
+  document.querySelector('#increase-bet').setAttribute('style', 'display: inline;');
+  document.querySelector('#decrease-bet').setAttribute('style', 'display: inline;');
+  document.querySelector('#deal-button').setAttribute('style', 'display: inline;');
+  document.querySelector('#hit-button').setAttribute('style', 'display: inline;');
+  document.querySelector('#stand-button').setAttribute('style', 'display: inline;');
+  document.querySelector('#reset-button').setAttribute('style', 'display: none;');
+  document.querySelector('#dealer-hand').innerHTML = '';
+  document.querySelector('#player-hand').innerHTML = '';
+  document.querySelector('#messages').innerHTML = '';
+  document.querySelector('#dealer-points').innerHTML = 0;
+  document.querySelector('#player-points').innerHTML = 0;
+  document.querySelector('#bet-amount').innerHTML = 0;
+}
 // End Function Section ---------------------------
 // ------------------------------------------------
 
@@ -347,18 +363,7 @@ window.addEventListener('DOMContentLoaded', function() {
         alert('Can\'t do that!')
       }
     }else if(e.target.id == "reset-button"){
-      document.querySelector('#increase-bet').setAttribute('style', 'display: inline;');
-      document.querySelector('#decrease-bet').setAttribute('style', 'display: inline;');
-      document.querySelector('#deal-button').setAttribute('style', 'display: inline;');
-      document.querySelector('#hit-button').setAttribute('style', 'display: inline;');
-      document.querySelector('#stand-button').setAttribute('style', 'display: inline;');
-      document.querySelector('#reset-button').setAttribute('style', 'display: none;');
-      document.querySelector('#dealer-hand').innerHTML = '';
-      document.querySelector('#player-hand').innerHTML = '';
-      document.querySelector('#messages').innerHTML = '';
-      document.querySelector('#dealer-points').innerHTML = 0;
-      document.querySelector('#player-points').innerHTML = 0;
-      document.querySelector('#bet-amount').innerHTML = 0;
+      reset();
       playerHand = [];
       dealerHand = [];
       keepDealing = true;
@@ -366,8 +371,9 @@ window.addEventListener('DOMContentLoaded', function() {
       shuffledDeck = [];
       playerPoints = [];
       dealerPoints = [];
-      playingDecks = buildDeck(1);
       betAmount = 0;
+      playingDecks = buildDeck(1);
+      
       // console.log(playingDecks)
       shuffledDeck = shuffle(playingDecks);
     }
