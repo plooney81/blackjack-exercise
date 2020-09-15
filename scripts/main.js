@@ -16,7 +16,7 @@ function addCard(cardVal, suit, whichHand, hand, special){
 
   container.innerHTML += newCard;
 
-  printPoints(returnHandPoints(hand), whichHand);
+  printPoints(returnHandPoints(hand, special), whichHand);
 }
 
 //create our deck of cards
@@ -89,7 +89,7 @@ function hit(deck, player){
   return arrayToReturn;
 }
 
-function returnHandPoints(hand){
+function returnHandPoints(hand, special){
   let aces = 0;
   let points = [0, 0];
   for (let index = 0; index < hand.length; index++){
@@ -107,6 +107,10 @@ function returnHandPoints(hand){
       points[0] += hand[index].rank;
       points[1] += hand[index].rank;
     }
+  }
+  if(special){
+    points[0] -= hand[hand.length - 1].rank;
+    points[1] -= hand[hand.length - 1].rank;
   }
   return points
 }
@@ -272,6 +276,7 @@ window.addEventListener('DOMContentLoaded', function() {
  
 
     }else if(e.target.id == "stand-button"){
+      dealerPoints = returnHandPoints(dealerHand);
       if (playerHand.length > 0){
         // stand function
         if(keepDealing){
